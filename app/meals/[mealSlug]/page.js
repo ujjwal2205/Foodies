@@ -2,6 +2,15 @@ import classes from './page.module.css';
 import {getMeal} from '@/lib/meals';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+export async function generateMetadata({params}){
+  const {mealSlug}=await params;
+  const meal=getMeal(mealSlug);
+  
+  return{
+    title:meal?.title,
+    description:meal?.summary,
+  }
+}
 export default async function MealDetailsPage({params}) {
   const {mealSlug}=await params;
   const meal=getMeal(mealSlug);
@@ -13,7 +22,7 @@ export default async function MealDetailsPage({params}) {
     <>
     <header className={classes.header}>
       <div className={classes.image}>
-        <Image src={meal.image} fill/>
+        <Image src={meal.image} alt={meal.title} fill/>
       </div>
       <div className={classes.headerText}>
         <h1>{meal.title}</h1>
